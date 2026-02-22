@@ -1,0 +1,29 @@
+{
+  "name": "newsbot",
+  "version": "1.0.0",
+  "description": "Personal news aggregation CLI that learns from browser history",
+  "type": "module",
+  "main": "dist/cli/index.js",
+  "bin": {
+    "newsbot": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "better-sqlite3": "^11.7.0",
+    "commander": "^13.1.0",
+    "open": "^10.1.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
