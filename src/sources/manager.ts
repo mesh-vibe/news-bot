@@ -107,6 +107,8 @@ export function defaultSourcesContent(): string {
 - https://hnrss.org/frontpage
 - https://www.theverge.com/rss/index.xml
 - https://techcrunch.com/feed/
+- https://rss.slashdot.org/Slashdot/slashdotMain
+- https://lobste.rs/rss
 
 ## News Sites (scraped via headlines)
 - reuters.com

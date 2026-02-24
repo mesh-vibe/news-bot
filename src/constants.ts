@@ -10,7 +10,7 @@ export const DIGEST_PATH = join(NEWSBOT_DIR, "news.html");
 export const HISTORY_DIR = join(NEWSBOT_DIR, "history");
 export const ARTICLES_PATH = join(NEWSBOT_DIR, ".articles.json");
 
-export const DEFAULT_MODEL = "claude-sonnet-4-20250514";
+export const DEFAULT_MODEL = "claude-haiku-4-5-20251001";
 export const DEFAULT_MAX_ARTICLES = 25;
 export const DEFAULT_SCAN_INTERVAL = "4 hours";
 export const DEFAULT_HISTORY_DAYS = 7;
