@@ -8,13 +8,13 @@
     "newsbot": "dist/cli/index.js"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "node_modules/.bin/tsc",
+    "dev": "node_modules/.bin/tsc --watch"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
+    "@anthropic-ai/sdk": "^0.78.0",
     "better-sqlite3": "^11.7.0",
-    "commander": "^13.1.0",
+    "commander": "^12.1.0",
     "open": "^10.1.0",
     "rss-parser": "^3.13.0"
   },

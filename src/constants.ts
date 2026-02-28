@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { homedir } from "node:os";
 
-export const NEWSBOT_DIR = join(homedir(), "newsbot");
+export const NEWSBOT_DIR = join(homedir(), "mesh-vibe", "data", "news-bot");
 export const CONFIG_PATH = join(NEWSBOT_DIR, "config.md");
 export const INTERESTS_PATH = join(NEWSBOT_DIR, "interests.md");
 export const SOURCES_PATH = join(NEWSBOT_DIR, "sources.md");

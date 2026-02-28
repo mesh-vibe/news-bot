@@ -5,7 +5,7 @@ import { extractDomain, log } from "../util.js";
 const parser = new RssParser({
   timeout: 15000,
   headers: {
-    "User-Agent": "Newsbot/1.0",
+    "User-Agent": "news-bot/1.0",
   },
 });
 

@@ -17,7 +17,7 @@ Run `newsbot scan` to execute all three phases, or run them individually.
 ```bash
 # Clone and build
 git clone https://github.com/cday-with-ai/Newsbot.git
-cd Newsbot
+cd news-bot
 npm install
 npm run build
 
