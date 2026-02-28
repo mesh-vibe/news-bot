@@ -12,6 +12,7 @@ import {
   cmdAddSource,
   cmdHistory,
   cmdOpen,
+  cmdStatus,
 } from "./commands.js";
 
 const program = new Command();
@@ -22,8 +23,13 @@ program
   .version("1.0.0");
 
 program
+  .command("status")
+  .description("Show newsbot system status")
+  .action(cmdStatus);
+
+program
   .command("init")
-  .description("Set up ~/newsbot/ directory with default config files")
+  .description("Set up ~/mesh-vibe/news-bot/ directory with default config files")
   .action(cmdInit);
 
 program

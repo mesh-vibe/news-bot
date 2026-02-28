@@ -1,10 +1,10 @@
 import { initNewsbot } from "../state/init.js";
 import { loadInterests, formatInterests } from "../state/interests.js";
 import { loadSources, addSource } from "../sources/manager.js";
-import { DIGEST_PATH, HISTORY_DIR } from "../constants.js";
+import { NEWSBOT_DIR, DIGEST_PATH, HISTORY_DIR, ARTICLES_PATH, SEEN_PATH } from "../constants.js";
 import { log, logHeader, logError } from "../util.js";
 import { NewsbotError } from "../types.js";
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 
 async function handleError(fn: () => Promise<void>): Promise<void> {
   try {
@@ -104,6 +104,41 @@ export async function cmdHistory(): Promise<void> {
   for (const f of files) {
     log(f.replace(".html", ""));
   }
+}
+
+export async function cmdStatus(): Promise<void> {
+  if (!existsSync(NEWSBOT_DIR)) {
+    log("Newsbot not initialized. Run 'newsbot init' first.");
+    process.exit(1);
+  }
+
+  const sources = loadSources();
+  const totalFeeds = sources.rssFeeds.length + sources.autoDiscovered.length;
+
+  let articleCount = 0;
+  try {
+    const articles = JSON.parse(readFileSync(ARTICLES_PATH, "utf-8"));
+    articleCount = Array.isArray(articles) ? articles.length : 0;
+  } catch {}
+
+  let seenCount = 0;
+  try {
+    const seen = JSON.parse(readFileSync(SEEN_PATH, "utf-8"));
+    seenCount = Object.keys(seen).length;
+  } catch {}
+
+  const historyCount = existsSync(HISTORY_DIR)
+    ? readdirSync(HISTORY_DIR).filter((f) => f.endsWith(".html")).length
+    : 0;
+
+  let lastDigest = "never";
+  if (existsSync(DIGEST_PATH)) {
+    lastDigest = statSync(DIGEST_PATH).mtime.toISOString();
+  }
+
+  logHeader("Newsbot Status:");
+  log(`Feeds: ${totalFeeds}  |  Articles: ${articleCount}  |  Seen: ${seenCount}  |  Digests: ${historyCount}`);
+  log(`Latest digest: ${lastDigest}`);
 }
 
 export async function cmdOpen(): Promise<void> {
