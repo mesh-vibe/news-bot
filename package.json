@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "node_modules/.bin/tsc",
-    "dev": "node_modules/.bin/tsc --watch"
+    "dev": "node_modules/.bin/tsc --watch",
+    "test": "vitest run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
