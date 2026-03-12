@@ -2,11 +2,11 @@
 name: news-bot
 description: Personal news aggregation from RSS feeds and browser history
 cli: newsbot
-data_dir: ~/mesh-vibe/data/news-bot
+data_dir: ~/mesh-vibe/news-bot
 version: 1.0.0
 reports:
   - name: Daily Digest
-    path: ~/mesh-vibe/data/news-bot/news.html
+    path: ~/mesh-vibe/news-bot/news.html
 health_check: newsbot status
 depends_on:
   - vault

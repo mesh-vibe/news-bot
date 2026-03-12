@@ -21,8 +21,8 @@ cd news-bot
 npm install
 npm run build
 
-# Set up your API key
-export ANTHROPIC_API_KEY="your-key-here"
+# Set up your API key (via vault)
+export ANTHROPIC_API_KEY="$(vault get anthropic-api-key)"
 
 # Initialize config directory and run
 node dist/cli/index.js init
@@ -42,7 +42,7 @@ newsbot scan
 ## Requirements
 
 - Node.js >= 20
-- `ANTHROPIC_API_KEY` environment variable
+- `ANTHROPIC_API_KEY` environment variable (use `vault get anthropic-api-key`)
 - Chrome or Brave browser (for history access)
 - macOS (browser history paths are macOS-specific)
 
