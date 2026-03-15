@@ -1,5 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { formatDate, extractDomain, truncate, daysAgo } from "../src/util.js";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import {
+  formatDate,
+  formatDateTime,
+  extractDomain,
+  truncate,
+  daysAgo,
+  atomicWrite,
+  tempPath,
+} from "../src/util.js";
 
 describe("formatDate", () => {
   it("formats a known date as YYYY-MM-DD", () => {
@@ -76,6 +87,90 @@ describe("truncate", () => {
 
   it("handles maxLength of 1", () => {
     expect(truncate("abc", 1)).toBe("\u2026");
+  });
+});
+
+describe("formatDateTime", () => {
+  it("formats a known date with month, day, year, hour, minute", () => {
+    const date = new Date("2024-06-15T14:30:00Z");
+    const result = formatDateTime(date);
+    // toLocaleString("en-US") — verify key components are present
+    expect(result).toContain("2024");
+    expect(result).toContain("15");
+    expect(result).toMatch(/Jun/);
+  });
+
+  it("formats epoch start", () => {
+    const date = new Date("1970-01-01T00:00:00Z");
+    const result = formatDateTime(date);
+    // In western-hemisphere TZs, epoch UTC renders as Dec 31, 1969
+    expect(result).toMatch(/1969|1970/);
+    expect(result).toMatch(/Jan|Dec/);
+  });
+
+  it("formats end-of-year date", () => {
+    const date = new Date("2023-12-31T23:59:00Z");
+    const result = formatDateTime(date);
+    expect(result).toContain("2023");
+    expect(result).toMatch(/Dec|Jan/); // Dec or Jan depending on local TZ
+  });
+
+  it("returns a non-empty string", () => {
+    expect(formatDateTime(new Date())).toBeTruthy();
+  });
+});
+
+describe("atomicWrite", () => {
+  it("writes content that can be read back", () => {
+    const filePath = join(tmpdir(), `newsbot-test-atomic-${Date.now()}.txt`);
+    atomicWrite(filePath, "hello atomic");
+    const content = readFileSync(filePath, "utf-8");
+    expect(content).toBe("hello atomic");
+  });
+
+  it("creates parent directories if they do not exist", () => {
+    const filePath = join(
+      tmpdir(),
+      `newsbot-test-atomic-${Date.now()}`,
+      "nested",
+      "file.txt",
+    );
+    atomicWrite(filePath, "nested content");
+    const content = readFileSync(filePath, "utf-8");
+    expect(content).toBe("nested content");
+  });
+
+  it("overwrites existing file atomically", () => {
+    const filePath = join(tmpdir(), `newsbot-test-atomic-overwrite-${Date.now()}.txt`);
+    atomicWrite(filePath, "first");
+    atomicWrite(filePath, "second");
+    const content = readFileSync(filePath, "utf-8");
+    expect(content).toBe("second");
+  });
+});
+
+describe("tempPath", () => {
+  it("returns a path under the system temp directory", () => {
+    const result = tempPath("test");
+    expect(result).toContain(tmpdir());
+  });
+
+  it("includes the prefix in the path", () => {
+    const result = tempPath("myfoo");
+    expect(result).toContain("newsbot-myfoo-");
+  });
+
+  it("generates unique paths on each call", () => {
+    const a = tempPath("uniq");
+    const b = tempPath("uniq");
+    expect(a).not.toBe(b);
+  });
+
+  it("includes a hex suffix", () => {
+    const result = tempPath("hex");
+    // format: newsbot-hex-<12 hex chars>
+    const basename = result.split("/").pop()!;
+    expect(basename).toMatch(/^newsbot-hex-[0-9a-f]{12}$/);
   });
 });
 

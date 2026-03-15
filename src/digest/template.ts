@@ -2,10 +2,17 @@ import type { ScoredArticle, DigestMetadata } from "../types.js";
 import { formatDateTime, truncate } from "../util.js";
 
 function scoreColor(score: number): string {
-  if (score >= 0.8) return "#22c55e";
-  if (score >= 0.6) return "#eab308";
+  if (score >= 0.8) return "var(--green)";
+  if (score >= 0.6) return "var(--orange)";
   if (score >= 0.4) return "#f97316";
-  return "#94a3b8";
+  return "var(--text-muted)";
+}
+
+function scoreBg(score: number): string {
+  if (score >= 0.8) return "rgba(63,185,80,0.2)";
+  if (score >= 0.6) return "rgba(210,153,34,0.2)";
+  if (score >= 0.4) return "rgba(249,115,22,0.2)";
+  return "rgba(139,148,158,0.2)";
 }
 
 function scoreLabel(score: number): string {
@@ -25,6 +32,7 @@ function escapeHtml(str: string): string {
 
 function articleCard(article: ScoredArticle): string {
   const color = scoreColor(article.score);
+  const bg = scoreBg(article.score);
   const label = scoreLabel(article.score);
   const title = escapeHtml(article.title);
   const summary = escapeHtml(article.summary || "");
@@ -33,18 +41,26 @@ function articleCard(article: ScoredArticle): string {
   const publishedAt = article.publishedAt ? new Date(article.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "";
 
   return `
-    <article class="card">
-      <div class="card-header">
-        <span class="score" style="background: ${color}">${label} ${(article.score * 100).toFixed(0)}%</span>
-        <span class="source">${source}</span>
-        ${publishedAt ? `<span class="date">${publishedAt}</span>` : ""}
+    <article class="news-card">
+      <div class="news-header">
+        <span class="news-score" style="background: ${bg}; color: ${color}">${label} ${(article.score * 100).toFixed(0)}%</span>
+        <span class="news-source">${source}</span>
+        ${publishedAt ? `<span class="news-date">${publishedAt}</span>` : ""}
       </div>
-      <h2><a href="${escapeHtml(article.url)}" target="_blank" rel="noopener">${title}</a></h2>
-      ${summary ? `<p class="summary">${summary}</p>` : ""}
-      ${topics.length ? `<div class="topics">${topics.map((t) => `<span class="topic">${t}</span>`).join("")}</div>` : ""}
+      <h2 class="news-title"><a href="${escapeHtml(article.url)}" target="_blank" rel="noopener">${title}</a></h2>
+      ${summary ? `<p class="news-summary">${summary}</p>` : ""}
+      ${topics.length ? `<div class="news-topics">${topics.map((t) => `<span class="news-topic">${t}</span>`).join("")}</div>` : ""}
     </article>`;
 }
 
+/**
+ * Generates the news digest HTML.
+ *
+ * Uses the vibe-http design system: same CSS variables, color palette, and
+ * font stack. When embedded inside vibe-http, the <main> content is extracted
+ * and inherits the portal's theme. When viewed standalone, the bundled styles
+ * provide the same look.
+ */
 export function generateHtml(articles: ScoredArticle[], metadata: DigestMetadata): string {
   const generated = formatDateTime(metadata.generatedAt);
   const topicsList = metadata.topTopics.map((t) => escapeHtml(t)).join(", ");
@@ -57,111 +73,72 @@ export function generateHtml(articles: ScoredArticle[], metadata: DigestMetadata
   <title>Newsbot Digest — ${generated}</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --fg: #1a1a2e;
-      --card-bg: #f8f9fa;
-      --card-border: #e2e8f0;
-      --link: #2563eb;
-      --muted: #64748b;
-      --topic-bg: #e2e8f0;
+      --bg: #0d1117; --surface: #161b22; --border: #30363d;
+      --text: #e6edf3; --text-muted: #8b949e; --text-link: #58a6ff;
+      --green: #3fb950; --red: #f85149; --orange: #d29922; --blue: #58a6ff;
     }
-    @media (prefers-color-scheme: dark) {
+    @media (prefers-color-scheme: light) {
       :root {
-        --bg: #0f172a;
-        --fg: #e2e8f0;
-        --card-bg: #1e293b;
-        --card-border: #334155;
-        --link: #60a5fa;
-        --muted: #94a3b8;
-        --topic-bg: #334155;
+        --bg: #ffffff; --surface: #f6f8fa; --border: #d1d9e0;
+        --text: #1f2328; --text-muted: #656d76; --text-link: #0969da;
+        --green: #1a7f37; --red: #cf222e; --orange: #9a6700; --blue: #0969da;
       }
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.6;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6;
+      max-width: 900px; margin: 0 auto; padding: 2rem 1rem;
     }
-    header {
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--card-border);
+    .news-digest-header {
+      margin-bottom: 1.5rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
     }
-    header h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
-    .meta { color: var(--muted); font-size: 0.875rem; }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
+    .news-digest-header h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .news-meta { color: var(--text-muted); font-size: 0.875rem; }
+    .news-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.25rem; margin-bottom: 0.75rem;
     }
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.8rem;
+    .news-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.5rem; font-size: 0.8rem;
     }
-    .score {
-      color: white;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 0.75rem;
+    .news-score {
+      padding: 2px 8px; border-radius: 12px;
+      font-weight: 600; font-size: 0.75rem;
     }
-    .source { color: var(--muted); }
-    .date { color: var(--muted); }
-    .card h2 {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
+    .news-source { color: var(--text-muted); }
+    .news-date { color: var(--text-muted); }
+    .news-title { font-size: 1.1rem; margin-bottom: 0.5rem; line-height: 1.3; }
+    .news-title a { color: var(--text-link); text-decoration: none; }
+    .news-title a:hover { text-decoration: underline; }
+    .news-summary { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .news-topics { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+    .news-topic {
+      background: rgba(139,148,158,0.15); padding: 2px 8px;
+      border-radius: 12px; font-size: 0.75rem; color: var(--text-muted);
     }
-    .card h2 a {
-      color: var(--link);
-      text-decoration: none;
-    }
-    .card h2 a:hover { text-decoration: underline; }
-    .summary {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
-    .topics { display: flex; flex-wrap: wrap; gap: 0.375rem; }
-    .topic {
-      background: var(--topic-bg);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-    footer {
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--card-border);
-      color: var(--muted);
-      font-size: 0.8rem;
-      text-align: center;
+    .news-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted); font-size: 0.8rem; text-align: center;
     }
   </style>
 </head>
 <body>
-  <header>
+  <header class="news-digest-header">
     <h1>Newsbot Digest</h1>
-    <p class="meta">
+    <p class="news-meta">
       ${metadata.articleCount} articles from ${metadata.sourcesScanned} sources
       — Generated ${generated}
     </p>
-    ${topicsList ? `<p class="meta">Topics: ${topicsList}</p>` : ""}
+    ${topicsList ? `<p class="news-meta">Topics: ${topicsList}</p>` : ""}
   </header>
   <main>
     ${articles.map(articleCard).join("\n")}
   </main>
-  <footer>
+  <footer class="news-footer">
     Generated by Newsbot
   </footer>
 </body>
