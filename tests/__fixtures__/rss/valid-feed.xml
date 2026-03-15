@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Tech News Daily</title>
+    <link>https://technews.example.com</link>
+    <description>Latest technology news</description>
+    <item>
+      <title>TypeScript 6.0 Released</title>
+      <link>https://technews.example.com/typescript-6</link>
+      <pubDate>Mon, 10 Mar 2026 10:00:00 GMT</pubDate>
+      <description>TypeScript 6.0 brings major improvements to type inference and performance.</description>
+    </item>
+    <item>
+      <title>Rust Gains Enterprise Adoption</title>
+      <link>https://technews.example.com/rust-enterprise</link>
+      <pubDate>Sun, 09 Mar 2026 14:30:00 GMT</pubDate>
+      <description>More Fortune 500 companies are adopting Rust for critical infrastructure.</description>
+    </item>
+    <item>
+      <title>AI Chip Shortage Easing</title>
+      <link>https://technews.example.com/ai-chips</link>
+      <pubDate>Sat, 08 Mar 2026 08:00:00 GMT</pubDate>
+      <description>New fabrication plants are helping meet demand for AI accelerators.</description>
+    </item>
+  </channel>
+</rss>

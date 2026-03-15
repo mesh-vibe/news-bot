@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Atom Tech Blog</title>
+  <link href="https://atomblog.example.com"/>
+  <updated>2026-03-10T12:00:00Z</updated>
+  <author>
+    <name>Editor</name>
+  </author>
+  <entry>
+    <title>Understanding WebAssembly</title>
+    <link href="https://atomblog.example.com/wasm"/>
+    <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+    <updated>2026-03-10T12:00:00Z</updated>
+    <summary>A deep dive into WebAssembly and its growing ecosystem.</summary>
+  </entry>
+  <entry>
+    <title>Edge Computing Trends</title>
+    <link href="https://atomblog.example.com/edge"/>
+    <id>urn:uuid:1225c695-cfb8-4ebb-bbbb-80da344efa6b</id>
+    <updated>2026-03-09T08:00:00Z</updated>
+    <summary>How edge computing is reshaping cloud architecture.</summary>
+  </entry>
+</feed>

@@ -1,0 +1,32 @@
+[
+  {
+    "title": "TypeScript 6.0 Released",
+    "url": "https://technews.example.com/typescript-6",
+    "source": "Tech News Daily",
+    "publishedAt": "2026-03-10T10:00:00.000Z",
+    "description": "TypeScript 6.0 brings major improvements.",
+    "score": 0.92,
+    "summary": "TypeScript 6.0 introduces advanced type inference and significant performance improvements.",
+    "topics": ["TypeScript", "Programming Languages"]
+  },
+  {
+    "title": "AI Chip Shortage Easing",
+    "url": "https://technews.example.com/ai-chips",
+    "source": "Tech News Daily",
+    "publishedAt": "2026-03-08T08:00:00.000Z",
+    "description": "New fabrication plants helping meet demand.",
+    "score": 0.75,
+    "summary": "New semiconductor fabrication plants are coming online to meet the growing demand for AI accelerators.",
+    "topics": ["AI / machine learning", "Hardware"]
+  },
+  {
+    "title": "Chess World Championship Preview",
+    "url": "https://chess.example.com/wcc-preview",
+    "source": "Chess News",
+    "publishedAt": "2026-03-09T14:00:00.000Z",
+    "description": "Preview of the upcoming world championship match.",
+    "score": 0.55,
+    "summary": "A detailed preview of the upcoming World Chess Championship, analyzing both players' preparation and styles.",
+    "topics": ["Chess"]
+  }
+]

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Suspicious Feed</title>
+    <link>https://evil.example.com</link>
+    <item>
+      <title>&lt;script&gt;alert('xss')&lt;/script&gt;</title>
+      <link>https://evil.example.com/xss1</link>
+      <description>&lt;img onerror=alert(1) src=x&gt; Breaking news about security</description>
+    </item>
+    <item>
+      <title>Normal Title &lt;b&gt;with html&lt;/b&gt;</title>
+      <link>javascript:alert('xss')</link>
+      <description>Article with "quotes" &amp; special &lt;characters&gt;</description>
+    </item>
+    <item>
+      <title>Data URI Attack</title>
+      <link>data:text/html,&lt;script&gt;alert('xss')&lt;/script&gt;</link>
+      <description>&lt;iframe src="javascript:alert(1)"&gt;&lt;/iframe&gt;</description>
+    </item>
+  </channel>
+</rss>

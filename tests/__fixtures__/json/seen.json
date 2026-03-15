@@ -1,0 +1,7 @@
+{
+  "entries": [
+    { "url": "https://example.com/old-article", "seenAt": "2025-01-01T00:00:00.000Z" },
+    { "url": "https://example.com/recent-article", "seenAt": "2026-03-10T12:00:00.000Z" },
+    { "url": "https://example.com/mid-article", "seenAt": "2026-01-15T08:00:00.000Z" }
+  ]
+}

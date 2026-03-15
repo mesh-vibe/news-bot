@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Incomplete Feed</title>
+    <link>https://incomplete.example.com</link>
+    <item>
+      <title>Has Title Only</title>
+    </item>
+    <item>
+      <link>https://incomplete.example.com/no-title</link>
+    </item>
+    <item>
+      <title>Complete Item</title>
+      <link>https://incomplete.example.com/complete</link>
+      <description>This item has all fields</description>
+    </item>
+    <item>
+      <description>No title or link, just description</description>
+    </item>
+  </channel>
+</rss>
